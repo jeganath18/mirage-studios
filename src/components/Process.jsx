@@ -32,8 +32,7 @@ export default function Process() {
       <DesignProcess></DesignProcess>
         <div className="stage">
           {steps.map((s, i) => (
-            <div className="pc glass" key={s.title} ref={(el) => (cards.current[i] = el)} style={{ background: 'rgba(255,255,255,.7)' }}>
-              {/* <span className="n">0{i + 1}</span> */}
+            <div className="pc glass" key={s.title} ref={(el) => (cards.current[i] = el)} style={{ background: 'rgba(255,255,255,.7)' }} data-cursor="view">
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </div>

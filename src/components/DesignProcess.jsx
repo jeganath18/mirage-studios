@@ -87,8 +87,8 @@ const DesignProcess = () => {
       {/* Main content */}
       <div className="dp-content">
         <div className="dp-heading">
-          <h1 className="dp-word dp-design">Design</h1>
-          <h1 className="dp-word dp-process">Process</h1>
+          <h1 className="dp-word dp-design" data-cursor="view">Design</h1>
+          <h1 className="dp-word dp-process" data-cursor="view">Process</h1>
         </div>
 
         <div className="dp-description">

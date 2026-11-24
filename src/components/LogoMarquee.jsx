@@ -2,7 +2,7 @@ import { logoRows } from '../data/logos';
 
 function Row({ logos, reverse }) {
   return (
-    <div className={`row${reverse ? ' rev' : ''}`}>
+    <div className={`row${reverse ? ' rev' : ''}`} data-cursor="view">
       {[0, 1].map((copy) =>
         logos.map((l) => (
           <div className="lg" key={`${copy}-${l.name}`} aria-hidden={copy ? 'true' : undefined}>

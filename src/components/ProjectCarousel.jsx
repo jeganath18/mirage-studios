@@ -35,7 +35,7 @@ export default function ProjectCarousel({ images = [], name }) {
   }
 
   return (
-    <div className="img ph project-carousel">
+    <div className="img ph project-carousel" data-cursor="view">
       {images.map((src, index) => (
         <img
           key={src}

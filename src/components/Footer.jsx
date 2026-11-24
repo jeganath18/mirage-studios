@@ -21,7 +21,7 @@ export default function Footer() {
   };
   return (
     <footer>
-      <Reveal as="h2">
+      <Reveal as="h2" data-cursor="view">
         Let’s Build Something<span>That Lasts.</span>
       </Reveal>
       <Reveal as="a" className="btn" delay={0.15} href={CONTACT_URL}>
@@ -71,7 +71,7 @@ export default function Footer() {
         </div>
       </Reveal>
       <p className="cp">© 2026 Mirage Studios. All rights reserved.</p>
-      <Reveal className="big" aria-hidden="true">
+      <Reveal className="big" aria-hidden="true" data-cursor="view">
         Mirage Studios
       </Reveal>
     </footer>

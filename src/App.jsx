@@ -1,4 +1,8 @@
+
 import useFxClass from './hooks/useFxClass';
+
+import CustomCursor from './components/Custom_Cursor';
+
 import Hero from './components/Hero';
 import LogoMarquee from './components/LogoMarquee';
 import Testimonials from './components/Testimonials';
@@ -11,8 +15,11 @@ import Footer from './components/Footer';
 
 export default function App() {
   useFxClass();
+
   return (
     <>
+      <CustomCursor />
+
       <Hero />
       <LogoMarquee />
       <Testimonials />

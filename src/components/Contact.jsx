@@ -41,7 +41,7 @@ export default function Contact() {
       id="contact"
       aria-label="Contact"
     >
-      <h2 aria-label={HEADLINE}>
+      <h2 aria-label={HEADLINE} data-cursor="view">
         {words.map((word, wordIndex) => (
           <span
             className="wd"
@@ -66,10 +66,10 @@ export default function Contact() {
       </h2>
 
       <div className="mk">
-        <img src="/mirage_logo/light.svg" height={5} alt="" />
+        <img src="https://res.cloudinary.com/gqwrlg7y/image/upload/v1795531459/logo.svg" height={5} alt="" data-cursor="view" />
       </div>
 
-      <div className="contact-cta mt-7">
+      <div className="contact-cta mt-7" data-cursor="view">
         <HeroButton children='Start the conversation'></HeroButton>
       </div>
     </section>

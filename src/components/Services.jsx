@@ -89,7 +89,7 @@ useScrollFrame((fx, vh, isMobile) => {
 
   return (
     <section id="services" aria-label="Services">
-      <div className="intro">
+      <div className="intro" data-cursor="view">
         <Reveal as="p">We help ambitious businesses turn</Reveal>
         <Reveal as="h2" delay={0.1}>Ideas into brands</Reveal>
         <Reveal as="p" delay={0.2}>Brands that are clear, consistent everywhere, and strong enough to grow over time</Reveal>
@@ -99,8 +99,8 @@ useScrollFrame((fx, vh, isMobile) => {
           {services.map((s, i) => (
             <div className="sl" key={s.title} ref={(el) => (layers.current[i] = el)}>
               <div className="img ph" ref={(el) => (imgs.current[i] = el)}
-                style={s.image ? { backgroundImage: `url(${s.image})`, backgroundSize: 'cover' } : undefined}>
-                {!s.image && `Image placeholder: ${s.title}`}
+                style={s.image ? { backgroundImage: `url(${s.image})`, backgroundSize: 'cover' } : undefined} data-cursor="view">
+                {!s.image && `Image placeholder: ${s.title}`} 
               </div>
               <div className="info glass" ref={(el) => (infos.current[i] = el)}>
                 {/* <span className="n">{s.number}</span> */}

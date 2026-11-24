@@ -24,7 +24,8 @@ export default function Hero() {
       <div className="hl">
         <div>
           <nav className="nav" aria-label="Main">
-            <img src="https://res.cloudinary.com/gqwrlg7y/image/upload/v1795531459/logo.svg" height={5} alt="" />
+            <img src="https://res.cloudinary.com/gqwrlg7y/image/upload/v1795531459/logo.svg" height={5} alt="" data-cursor="view"/>
+            <a href="https://mirage-studios-coral.vercel.app/"></a>
             <ul>
               {NAV.map((n) => (
                 <li key={n.label}>
@@ -38,7 +39,7 @@ export default function Hero() {
           </nav>
         </div>
         <div className="hc">
-          <h1>
+          <h1 data-cursor="view">
             Big ideas, <br />
             Bolder Brands
           </h1>
