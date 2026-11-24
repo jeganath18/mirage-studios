@@ -1,0 +1,325 @@
+
+.design-process {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+
+  background: linear-gradient(
+    120deg,
+    #fff 0%,
+    #f7f7f7 30%,
+    #eee 55%,
+    #fafafa 80%,
+    #fff 100%
+  );
+}
+
+/* Background gradients */
+
+.dp-gradient {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.dp-gradient-one {
+  width: 45vw;
+  height: 45vw;
+  top: -20%;
+  left: -10%;
+  background: rgba(210, 210, 210, 0.45);
+}
+
+.dp-gradient-two {
+  width: 40vw;
+  height: 40vw;
+  bottom: -20%;
+  right: -10%;
+  background: rgba(225, 225, 225, 0.8);
+}
+
+.dp-gradient-three {
+  width: 30vw;
+  height: 30vw;
+  top: 30%;
+  left: 40%;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Main content positioning */
+
+.dp-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4vw 2vw;
+  transform: translateY(-5vh);
+}
+
+.dp-heading {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Heading typography */
+
+.dp-word {
+  width: 100%;
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(4rem, 15vw, 15rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.09em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.dp-design {
+  color: #242424;
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.dp-process {
+  color: #888;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.design-process.is-visible .dp-design {
+  animation: designEnter 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.design-process.is-visible .dp-process {
+  animation: processEnter 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+@keyframes designEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes processEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Description */
+
+.dp-description {
+  width: min(650px, 85%);
+  min-height: 75px;
+  margin-top: 38px;
+  text-align: center;
+}
+
+.dp-description p {
+  margin: 0;
+  color: #777;
+  font-size: clamp(14px, 1.35vw, 18px);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.015em;
+}
+
+/* Typewriter cursor */
+
+.dp-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -2px;
+  background: #555;
+  animation: cursorBlink 0.8s steps(2, start) infinite;
+}
+
+@keyframes cursorBlink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Falling elements container */
+
+.dp-falling-elements {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Common falling animation */
+
+.dp-fall {
+  position: absolute;
+  top: -40px;
+  opacity: 0;
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Different element styles */
+
+.dp-fall-circle {
+  border: 5px solid rgba(80, 80, 80, 0.35);
+  border-radius: 50%;
+}
+
+.dp-fall-square {
+  border: 5px solid rgba(80, 80, 80, 0.25);
+  transform: rotate(45deg);
+}
+
+.dp-fall-plus {
+  width: auto !important;
+  height: auto !important;
+}
+
+.dp-fall-plus::before,
+.dp-fall-plus::after {
+  content: "";
+  position: absolute;
+  background: rgba(80, 80, 80, 0.35);
+}
+
+.dp-fall-plus::before {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+}
+
+.dp-fall-plus::after {
+  width: 1px;
+  height: 100%;
+  left: 50%;
+}
+
+.dp-fall-line {
+  width: 1px !important;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(80, 80, 80, 0.35),
+    transparent
+  );
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translate3d(0, -30px, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.8;
+  }
+
+  75% {
+    opacity: 0.45;
+  }
+
+  100% {
+    transform: translate3d(35px, 110vh, 0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* Tablet */
+
+@media (max-width: 1024px) {
+  .dp-word {
+    font-size: clamp(4rem, 16vw, 10rem);
+  }
+
+  .dp-description {
+    margin-top: 30px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .design-process {
+    min-height: 85svh;
+  }
+
+  .dp-content {
+    padding: 8vw 3vw;
+    transform: translateY(-3vh);
+  }
+
+  .dp-heading {
+    gap: 8px;
+  }
+
+  .dp-word {
+    font-size: clamp(3.2rem, 16.5vw, 6rem);
+    letter-spacing: -0.075em;
+  }
+
+  .dp-description {
+    width: 90%;
+    margin-top: 25px;
+    min-height: 100px;
+  }
+
+  .dp-description p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .dp-gradient {
+    filter: blur(65px);
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-design,
+  .dp-process {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+
+  .dp-fall,
+  .dp-cursor {
+    animation: none !important;
+  }
+}
