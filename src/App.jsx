@@ -1,6 +1,5 @@
-
 import useFxClass from './hooks/useFxClass';
-
+import BackToTop from './components/Buttons/BackToTop';
 import CustomCursor from './components/Custom_Cursor';
 
 import Hero from './components/Hero';
@@ -19,7 +18,6 @@ export default function App() {
   return (
     <>
       <CustomCursor />
-
       <Hero />
       <LogoMarquee />
       <Testimonials />
@@ -29,6 +27,7 @@ export default function App() {
       <FAQ />
       <Contact />
       <Footer />
+      <BackToTop/>
     </>
   );
 }

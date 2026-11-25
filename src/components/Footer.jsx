@@ -1,4 +1,3 @@
-
 import { NAV, SOCIAL, CONTACT_URL } from "../data/site";
 import Reveal from "./Reveal";
 import { useState } from "react";
@@ -70,7 +69,15 @@ export default function Footer() {
           </ul>
         </div>
       </Reveal>
-      <p className="cp">© 2026 Mirage Studios. All rights reserved.</p>
+
+      <div className="footer-bottom">
+        <p className="website-inquiry">
+          Need a website like this?{" "}
+          <a href="mailto:jeganathb2004@gmail.com">Contact me ↗</a>
+        </p>
+
+        <p className="cp">© 2026 Mirage Studios. All rights reserved.</p>
+      </div>
       <Reveal className="big" aria-hidden="true" data-cursor="view">
         Mirage Studios
       </Reveal>

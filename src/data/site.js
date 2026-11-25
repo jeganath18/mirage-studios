@@ -1,5 +1,5 @@
 // Put your video in /public and set the path, e.g. '/hero.mp4'. Leave empty to show the placeholder.
-export const HERO_VIDEO = 'https://res.cloudinary.com/gqwrlg7y/video/upload/v1795530659/landing-video.mp4';
+export const HERO_VIDEO = 'https://res.cloudinary.com/gqwrlg7y/video/upload/v1795618899/landing-video_1_-compressed.mp4';
 export const CONTACT_URL = 'https://mirage-studios.com/contact';
 export const NAV = [
   { label: 'Home', href: '#home' },

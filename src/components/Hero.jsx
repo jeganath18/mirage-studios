@@ -75,9 +75,7 @@ export default function Hero() {
           />
           {!videoReady && (
             <div className="vph">
-              Hero video goes here.
-              <br />
-              Set HERO_VIDEO in src/data/site.js
+              Hero video is loading...
             </div>
           )}
         </div>
