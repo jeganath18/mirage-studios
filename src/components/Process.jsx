@@ -30,14 +30,14 @@ export default function Process() {
     <section id="process" aria-label="Our process">
       <div className="pr pin" id="pr" ref={pin}>
       <DesignProcess></DesignProcess>
-        <div className="stage">
+        {/* <div className="stage">
           {steps.map((s, i) => (
             <div className="pc glass" key={s.title} ref={(el) => (cards.current[i] = el)} style={{ background: 'rgba(255,255,255,.7)' }} data-cursor="view">
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );
