@@ -1,0 +1,645 @@
+/* ==========================================
+   WORK SECTION
+========================================== */
+
+.work-gallery-section {
+  --rail-width: 46px;
+
+  /* Own stacking layer: sections above (sticky / overflowing text,
+     decorative lines) can no longer paint on top of this one */
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  overflow: clip;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #ffffff;
+  color: #171717;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+
+  transition: background-color 0.7s ease;
+}
+
+/* Keep heading typography unchanged: layout/spacing only below */
+
+.work-gallery-header,
+.work-gallery-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.work-gallery-header {
+  padding: clamp(20px, 3vw, 40px) 4% 0;
+}
+
+.work-gallery-heading {
+  margin-bottom: clamp(16px, 2vw, 28px);
+}
+
+.work-gallery-footer {
+  padding: 16px 0 0;
+}
+
+.work-gallery-header a {
+  color: inherit;
+  white-space: nowrap;
+}
+
+.work-gallery-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 35px 4% 0;
+}
+
+.work-gallery {
+  display: flex;
+  width: 100%;
+  height: min(68vh, 680px);
+  min-height: 480px;
+  gap: 5px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ==========================================
+   CARDS (desktop / tablet = horizontal)
+   No absolute positioning: collapsed cards are
+   real flex items, so nothing can stack on top
+   of the active card or its overlay.
+========================================== */
+
+.work-gallery-card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+
+  overflow: hidden;
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  scroll-margin: 12px;
+
+  transition:
+    flex 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-gallery-card.is-active {
+  cursor: default;
+}
+
+.work-gallery-card:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -4px;
+}
+
+/* Collapsed cards become slim rails */
+.work-gallery.project-selected
+.work-gallery-card:not(.is-active) {
+  flex: 0 1 var(--rail-width);
+}
+
+/* Active card takes all remaining space */
+.work-gallery.project-selected
+.work-gallery-card.is-active {
+  flex: 1 1 0;
+  min-width: 280px;
+}
+
+/* ==========================================
+   PROJECT IMAGE
+========================================== */
+
+.work-gallery-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #dedede;
+  isolation: isolate;
+}
+
+/* z-index:1 makes the carousel its own stacking
+   context so its arrows/dots can never poke through
+   the glass panel (z-index 5). */
+.work-gallery-image .project-carousel {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+  overflow: hidden !important;
+}
+
+.work-gallery-image .project-carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   VERTICAL RAIL LABEL
+========================================== */
+
+/* Bottom scrim: white labels were invisible on light images (e.g. 03) */
+.work-gallery-image::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 45%;
+  z-index: 3;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72),
+    rgba(0, 0, 0, 0.3) 55%,
+    transparent
+  );
+
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.work-gallery-card.is-active .work-gallery-image::after {
+  opacity: 0; /* full gradient takes over */
+}
+
+.work-gallery-rail {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+  position: absolute;
+  inset: 20px 0;
+  z-index: 4;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+
+  color: #ffffff;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.work-gallery-rail span {
+  flex: none;
+}
+
+.work-gallery-rail span:last-child {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.work-gallery-card.is-active .work-gallery-rail {
+  opacity: 0;
+}
+
+/* ==========================================
+   GRADIENT
+========================================== */
+
+.work-gallery-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.82),
+    rgba(0, 0, 0, 0.25) 45%,
+    transparent 100%
+  );
+
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.work-gallery-card.is-active .work-gallery-gradient {
+  opacity: 1;
+}
+
+/* ==========================================
+   OVERLAY (holds the glass panel)
+   Height-capped to the card so the panel can
+   never overflow it; the panel scrolls inside.
+========================================== */
+
+.work-gallery-overlay {
+  position: absolute;
+  z-index: 5;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  max-height: calc(100% - 36px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(25px);
+
+  /* hide quickly so text never reflows in a shrinking card */
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+
+.work-gallery-card.is-active .work-gallery-overlay {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+
+  transition:
+    opacity 0.45s ease 0.25s,
+    transform 0.55s ease 0.25s,
+    visibility 0s linear 0s;
+}
+
+/* ==========================================
+   GLASS PANEL
+========================================== */
+
+.work-glass-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+
+  background: rgba(20, 20, 20, 0.62);
+  /* backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); */
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 3px;
+
+  color: #ffffff;
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .work-glass-panel {
+    background: rgba(20, 20, 20, 0.9);
+  }
+}
+
+/* Fixed header (always reachable, never scrolls away) */
+.glass-top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px 12px;
+
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.glass-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: -12px -10px -12px 0;
+  padding: 0 10px;
+
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+/* Scrollable body */
+.glass-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 22px 22px;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.glass-category {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.glass-content h3 {
+  margin: 8px 0 14px;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.glass-divider {
+  height: 1px;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.glass-about > span,
+.glass-project > span,
+.glass-deliverables > span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+}
+
+.glass-about p,
+.glass-project p {
+  margin: 6px 0 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+.deliverable-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 18px;
+}
+
+.deliverable-tags span {
+  padding: 4px 9px;
+  font-size: 11px;
+  line-height: 1.3;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.glass-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px; /* comfortable touch target */
+  padding: 0 16px;
+
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.glass-explore:hover,
+.glass-explore:focus-visible {
+  background: #ffffff;
+  color: #171717;
+}
+
+.glass-arrow {
+  display: none;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 900px) {
+  .work-gallery-section {
+    --rail-width: 40px;
+  }
+
+  .work-gallery {
+    height: 65vh;
+    height: 65svh;
+    min-height: 430px;
+  }
+
+}
+
+/* ==========================================
+   MOBILE: vertical accordion
+   Horizontal rails are too narrow to be useful
+   on a phone, so cards stack and the tapped
+   one grows taller instead.
+========================================== */
+
+@media (max-width: 600px) {
+  .work-gallery-section {
+    padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .work-gallery-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .work-gallery {
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    gap: 4px;
+    overflow: visible;
+  }
+
+  .work-gallery-card {
+    flex: none;
+    width: 100%;
+    height: 150px;
+  }
+
+  .work-gallery.project-selected
+  .work-gallery-card:not(.is-active) {
+    flex: none;
+    height: 64px;
+  }
+
+  .work-gallery.project-selected
+  .work-gallery-card.is-active {
+    flex: none;
+    min-width: 0;
+    height: min(640px, 86vh);
+    height: min(640px, 86svh);
+  }
+
+  .work-gallery-image::after {
+    display: none;
+  }
+
+  /* Rail label becomes a horizontal title bar */
+  .work-gallery-rail {
+    inset: 0 16px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .work-gallery-rail span:last-child {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 12px;
+    max-width: 100%;
+  }
+
+  /* Keep white labels legible on any image */
+  .work-gallery-card:not(.is-active) .work-gallery-gradient {
+    opacity: 1;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.1)
+    );
+  }
+
+  /* Panel: full width, leaves the top of the image visible */
+  .work-gallery-overlay {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-height: 74%;
+  }
+
+  .work-glass-panel {
+    max-width: none;
+  }
+
+  .glass-top {
+    padding: 14px 16px 10px;
+  }
+
+  .glass-content {
+    padding: 0 16px 16px;
+  }
+
+  .glass-content h3 {
+    font-size: 22px;
+  }
+
+  .glass-explore {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .work-gallery-section,
+  .work-gallery-card,
+  .work-gallery-overlay,
+  .work-gallery-gradient,
+  .work-gallery-rail {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* ==========================================
+   NO HOVER EFFECTS
+   Cards only change on click. This neutralises any hover
+   zoom / lift / dim / arrow-reveal coming from other
+   stylesheets (e.g. ProjectCarousel.css).
+========================================== */
+
+.work-gallery-card:hover,
+.work-gallery-card:hover .work-gallery-image,
+.work-gallery-card:hover .project-carousel,
+.work-gallery-card:hover .project-carousel img,
+.work-gallery-card:hover .project-carousel * {
+  transform: none !important;
+  filter: none !important;
+  scale: none !important;
+}
+
+.work-gallery-card:not(.is-active):hover .work-gallery-gradient {
+  opacity: 0;
+}
+
+.work-gallery-card:hover .work-gallery-rail {
+  opacity: 1;
+}
+
+.work-gallery-card.is-active:hover .work-gallery-rail {
+  opacity: 0;
+}
+
+/* =================================
+   SCROLL PINNING
+================================= */
+
+.work-gallery-section {
+  position: relative;
+
+  /* Controls how long the section stays pinned */
+  min-height: 150vh;
+
+  background-color: var(--active-color, #fff);
+}
+
+/* The actual pinned content */
+.work-gallery-sticky {
+  position: sticky;
+  top: 0;
+
+  height: 50vh;
+  height: 50svh;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+/* Keep your existing header and gallery styles */
+.work-gallery-header {
+  flex-shrink: 0;
+}
+
+.work-gallery-container {
+  flex: 1;
+  min-height: 0;
+}

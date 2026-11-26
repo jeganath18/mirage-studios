@@ -1,17 +1,21 @@
 
 import { useEffect, useState } from "react";
 
-export default function ProjectCarousel({ images = [], name }) {
+export default function ProjectCarousel({
+  images = [],
+  name,
+  active = false,
+}) {
   const [current, setCurrent] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
 
   useEffect(() => {
     setCurrent(0);
     setProgressKey((prev) => prev + 1);
-  }, [images]);
+  }, [images, active]);
 
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (!active || images.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
@@ -19,7 +23,7 @@ export default function ProjectCarousel({ images = [], name }) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [images.length, progressKey]);
+  }, [active, images.length, progressKey]);
 
   const goToSlide = (index) => {
     setCurrent(index);
@@ -27,15 +31,11 @@ export default function ProjectCarousel({ images = [], name }) {
   };
 
   if (!images.length) {
-    return (
-      <div className="img ph">
-        Image placeholder: {name}
-      </div>
-    );
+    return <div className="img ph">Image placeholder: {name}</div>;
   }
 
   return (
-    <div className="img ph project-carousel" data-cursor="view">
+    <div className="img ph project-carousel">
       {images.map((src, index) => (
         <img
           key={src}
@@ -48,34 +48,41 @@ export default function ProjectCarousel({ images = [], name }) {
         />
       ))}
 
-      {images.length > 1 && (
+      {active && images.length > 1 && (
         <div className="carousel-pagination">
-          <div className="carousel-dots">
+
+          <div className="carousel-progress-bars">
             {images.map((_, index) => (
               <button
                 key={index}
                 type="button"
-                className={`carousel-dot ${
+                className={`carousel-progress-segment ${
                   index === current ? "active" : ""
-                }`}
-                onClick={() => goToSlide(index)}
+                } ${index < current ? "completed" : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToSlide(index);
+                }}
                 aria-label={`Show image ${index + 1}`}
                 aria-current={index === current ? "true" : undefined}
-              />
+              >
+                <span
+                  key={index === current ? progressKey : "static"}
+                  className={
+                    index === current
+                      ? "carousel-segment-fill"
+                      : ""
+                  }
+                />
+              </button>
             ))}
-          </div>
-
-          <div className="carousel-progress">
-            <span
-              key={progressKey}
-              className="carousel-progress-fill"
-            />
           </div>
 
           <span className="carousel-count">
             {String(current + 1).padStart(2, "0")} /{" "}
             {String(images.length).padStart(2, "0")}
           </span>
+
         </div>
       )}
     </div>

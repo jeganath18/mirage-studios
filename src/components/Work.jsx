@@ -1,81 +1,196 @@
-
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { projects } from "../data/work";
-import { sectionProgress } from "../lib/motion";
-import useScrollFrame from "../hooks/useScrollFrame";
 import ProjectCarousel from "./ProjectCarousel";
+import "./WorkGallery.css";
 
 export default function Work() {
-  const pin = useRef(null);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(-1);
+  const cardRefs = useRef([]);
 
-  useScrollFrame((fx) => {
-    const el = pin.current;
-    if (!el) return;
+  const background =
+    active === -1 ? "#ffffff" : projects[active].bg || "#ffffff";
 
-    if (!fx) {
-      el.style.background = "";
-      return;
-    }
+  // Mobile accordion: after a card opens, bring it fully into view
+  useEffect(() => {
+    if (active === -1) return;
+    if (!window.matchMedia("(max-width: 600px)").matches) return;
 
-    const a = Math.min(
-      projects.length - 1,
-      Math.floor(sectionProgress(el) * projects.length)
-    );
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    setActive((prev) => (prev === a ? prev : a));
-    el.style.background = projects[a].bg;
+    const t = setTimeout(() => {
+      cardRefs.current[active]?.scrollIntoView({
+        block: "nearest",
+        behavior: reduce ? "auto" : "smooth",
+      });
+    }, 650); // after the height transition
 
-    const next = projects[a + 1];
-    if (next?.image) new Image().src = next.image;
-  });
+    return () => clearTimeout(t);
+  }, [active]);
 
-  return (
-    <section id="work" aria-label="Our work">
-      <div className="wk pin" id="wk" ref={pin}>
-        <div className="stage">
-          <h2 className="wt">Our Work</h2>
+return (
+  <section
+    className={`work-gallery-section ${
+      active !== -1 ? "has-active-project" : ""
+    }`}
+    id="work"
+    style={{
+      backgroundColor: background,
+      "--active-color": background,
+    }}
+  >
+    <div className="work-gallery-sticky">
 
-          {projects.map((p, i) => (
-            <article
-              className={`pj${i === active ? " on" : ""}`}
-              key={p.name}
-            >
-              <div>
-                <span>
-                  0{i + 1} / 0{projects.length}
-                </span>
+      <div className="work-gallery-header">
+        <h1>Our Work</h1>
+      </div>
+      </div>
 
-                <h3>{p.name}</h3>
-                <p>{p.category}</p>
+      <div className="work-gallery-container">
+        <div className="work-gallery-heading">
+          {/* <h2>Explore more work</h2>
+          <span>SELECTED PROJECTS</span> */}
+        </div>
 
-                <p style={{ color: "#4a4b4d", textAlign: "justify" }}>
-                  {p.description}
-                </p>
-              </div>
+        <div
+          className={`work-gallery ${
+            active !== -1 ? "project-selected" : ""
+          }`}
+        >
+          {projects.map((p, i) => {
+            const isActive = active === i;
 
-              <ProjectCarousel
-                images={
-                  p.images?.length
-                    ? p.images
-                    : p.image
-                    ? [p.image]
-                    : []
-                }
-                name={p.name}
-              />
-            </article>
-          ))}
+            const images = p.images?.length
+              ? p.images
+              : p.image
+              ? [p.image]
+              : [];
 
-          {/* Scroll guidance */}
-          {active < projects.length - 1 && (
-            <div className="work-scroll-hint">
-              {/* <span className="scroll-line"></span> */}
-              <span>SCROLL TO EXPLORE</span>
-              <span className="scroll-arrow">↓</span>
-            </div>
-          )}
+            let position = "normal";
+            if (active !== -1 && !isActive) {
+              position = i < active ? "left" : "right";
+            }
 
+            return (
+              <article
+                key={p.name}
+                ref={(el) => (cardRefs.current[i] = el)}
+                aria-label={p.name}
+                className={[
+                  "work-gallery-card",
+                  isActive ? "is-active" : "",
+                  position !== "normal" ? `is-${position}` : "",
+                ].join(" ")}
+                onClick={() => setActive(i)}
+                tabIndex={0}
+                onBlur={(e) => {
+                  if (
+                    !e.currentTarget.parentElement?.contains(
+                      e.relatedTarget
+                    )
+                  ) {
+                    setActive(-1);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setActive(-1);
+                  if (
+                    (e.key === "Enter" || e.key === " ") &&
+                    e.target === e.currentTarget
+                  ) {
+                    e.preventDefault();
+                    setActive(i);
+                  }
+                }}
+              >
+                <div className="work-gallery-image">
+                  <ProjectCarousel
+                    images={images}
+                    name={p.name}
+                    active={isActive}
+                  />
+
+                  <div className="work-gallery-gradient" />
+
+                  <div className="work-gallery-rail" aria-hidden="true">
+                    <span>0{i + 1}</span>
+                    <span>{p.name}</span>
+                  </div>
+
+                  <div className="work-gallery-overlay">
+                    <div className="work-glass-panel">
+                      <div className="glass-top">
+                        <span>PROJECT 0{i + 1}</span>
+                        <span className="glass-arrow" aria-hidden="true">
+                          ↗
+                        </span>
+                        <button
+                          type="button"
+                          className="glass-close"
+                          aria-label="Close project details"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActive(-1);
+                            e.currentTarget.blur();
+                          }}
+                        >
+                          Close ✕
+                        </button>
+                      </div>
+
+                      <div className="glass-content">
+                        <span className="glass-category">
+                          {p.category}
+                        </span>
+
+                        <h3>{p.name}</h3>
+
+                        <div className="glass-divider" />
+
+                        <div className="glass-project">
+                          <span>THE PROJECT</span>
+                          <p>
+                            {p.overview ||
+                              p.projectOverview ||
+                              p.description}
+                          </p>
+                        </div>
+
+                        {p.deliverables?.length > 0 && (
+                          <div className="glass-deliverables">
+                            <span>DELIVERABLES</span>
+
+                            <div className="deliverable-tags">
+                              {p.deliverables.map((item, index) => (
+                                <span key={index}>{item}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {p.link && (
+                          <a
+                            href={p.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="glass-explore"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            EXPLORE PROJECT <span>↗</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="work-gallery-footer">
+          <span className="work-gallery-hint">CLICK TO EXPLORE ↗</span>
         </div>
       </div>
     </section>
