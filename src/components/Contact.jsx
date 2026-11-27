@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { CONTACT_URL } from '../data/site';
 import HeroButton from './Buttons/HeroButton';
+import ContactDialog from "../components/ContactDialogue";
 
 const HEADLINE = "Your brand’s next chapter starts here";
 const words = HEADLINE.split(' ');
@@ -12,6 +12,7 @@ const OPEN_AT = 0.4;       // scroll progress where the circle is fully open
 export default function Contact() {
   const wrap = useRef(null);
   const stage = useRef(null);
+  const [contactOpen, setContactOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function Contact() {
   let charIndex = 0;
 
   return (
+    <>
     <div ref={wrap} className="ct-wrap" id="contact">
       <div ref={stage} className="ct-stage">
         <section
@@ -97,10 +99,12 @@ export default function Contact() {
           </div>
 
           <div className="contact-cta mt-7" data-cursor="view">
-            <HeroButton>Start the conversation</HeroButton>
+            <HeroButton onClick={()=> setContactOpen(true)}>Start the conversation</HeroButton>
           </div>
         </section>
       </div>
     </div>
+    <ContactDialog open={contactOpen} onClose={() => setContactOpen(false)} />
+    </>
   );
 }

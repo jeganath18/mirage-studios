@@ -1,8 +1,11 @@
 import { NAV, SOCIAL, CONTACT_URL } from "../data/site";
 import Reveal from "./Reveal";
 import { useState } from "react";
+import ContactDialog from "../components/ContactDialogue";
+
 export default function Footer() {
   const [copied, setCopied] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const email = "hello@mirage-studios.com";
 
@@ -19,11 +22,12 @@ export default function Footer() {
     }
   };
   return (
+    <>
     <footer>
       <Reveal as="h2" data-cursor="view">
         Let’s Build Something<span>That Lasts.</span>
       </Reveal>
-      <Reveal as="a" className="btn" delay={0.15} href={CONTACT_URL}>
+      <Reveal as="a" className="btn" delay={0.15} onClick={()=> setContactOpen(true)}>
         Book a Session{" "}
         <span className="ar" aria-hidden="true">
           →
@@ -82,5 +86,7 @@ export default function Footer() {
         Mirage Studios
       </Reveal>
     </footer>
+    <ContactDialog open={contactOpen} onClose={() => setContactOpen(false)} />
+    </>
   );
 }
